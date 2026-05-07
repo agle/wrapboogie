@@ -95,22 +95,22 @@ let get_error msg =
           let col = Re.Group.get g 3 |> Int.of_string_exn in
           let emsg = Re.Group.get g 4 in
           let _, pos = Re.Group.offset g 0 in
-          let rloc = Re.exec_opt related_loc ~pos msg in
           let trace =
             Re.exec_opt trace_loc ~pos msg
             |> Option.map (fun g -> Re.Group.get g 0)
-            |> Option.map (fun g -> "\n\n" ^ g)
+            |> Option.map (fun g -> "\n" ^ g)
             |> Option.get_or ~default:""
           in
+          let rloc = Re.exec_opt related_loc ~pos msg in
           let related =
-            Option.map
-              (fun g ->
-                let filename = Re.Group.get g 1 in
-                let line = Re.Group.get g 2 |> Int.of_string_exn in
-                let col = Re.Group.get g 3 |> Int.of_string_exn in
-                let msg = Re.Group.get g 4 in
-                { msg; line; col; filename; related = None; trace = "" })
-              rloc
+            Option.bind rloc (function
+              | g when fst (Re.Group.offset g 0) - pos < 5 ->
+                  let filename = Re.Group.get g 1 in
+                  let line = Re.Group.get g 2 |> Int.of_string_exn in
+                  let col = Re.Group.get g 3 |> Int.of_string_exn in
+                  let msg = Re.Group.get g 4 in
+                  Some { msg; line; col; filename; related = None; trace = "" }
+              | _ -> None)
           in
           { msg = emsg; line; col; filename; related; trace }
         end)
