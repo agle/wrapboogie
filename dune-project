@@ -19,11 +19,7 @@
  (name boogiewrap)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends 
-   ocaml
-   containers
-   pp_loc
-   )
+ (depends ocaml containers pp_loc re)
  (tags
   ("add topics" "to describe" your project)))
 

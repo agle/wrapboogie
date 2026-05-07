@@ -118,10 +118,12 @@ let get_error msg =
   (mainmsg, errs)
 
 let print_error msg =
-  let msg, ers = get_error msg in
-  print_endline msg;
-  print_endline "";
-  List.iter (fun e -> print_endline @@ show_err_info e) ers
+  try
+    let msg, ers = get_error msg in
+    print_endline msg;
+    print_endline "";
+    List.iter (fun e -> print_endline @@ show_err_info e) ers
+  with Not_found -> print_endline msg
 
 let () =
   let a = Sys.argv |> Array.to_list |> List.tl |> String.concat " " in

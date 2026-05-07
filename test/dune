@@ -1,3 +1,2 @@
-(test
- (name test_boogie)
- (libraries boogie))
+(cram
+ (deps %{bin:boogiewrap} claslocnew.bpl))
