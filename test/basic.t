@@ -8,18 +8,22 @@
   271 |     assert (#Gamma_R1_2 && #Gamma_R4_8);
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   
-  Execution trace:
+    Execution trace:
       claslocnew.bpl(239,3): b#main_entry
       claslocnew.bpl(245,3): b#phi_4
       claslocnew.bpl(252,3): b#main_loop3_116
       claslocnew.bpl(259,3): b#phi_7
       claslocnew.bpl(269,3): b#main_loop2_110
-  
+    
   Error: a precondition for this call could not be proved
   387 |     call #R1_retval_inlined_10, #Gamma_R1_retval_inlined_10, #R2_35, #Gamma_R2_35 := p$snk_at_md_4196484(zero_extend32_32(#R2_3[32:0]), #Gamma_R2_3);
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   
-  Execution trace:
+    Related: this is the precondition that could not be proved
+    115 |   requires ((#Gamma_R0_in || ($Global_4325432_4325436 == 1bv32)) && ($Global_4325440_4325444 == 1bv32));
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    
+    Execution trace:
       claslocnew.bpl(239,3): b#main_entry
       claslocnew.bpl(245,3): b#phi_4
       claslocnew.bpl(252,3): b#main_loop3_116
@@ -35,8 +39,4 @@
       claslocnew.bpl(363,3): b#main_loop1_76
       claslocnew.bpl(373,3): b#phi_36
       claslocnew.bpl(377,3): b#main_loop1_66
-  
-  Related: this is the precondition that could not be proved
-  115 |   requires ((#Gamma_R0_in || ($Global_4325432_4325436 == 1bv32)) && ($Global_4325440_4325444 == 1bv32));
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  
+    

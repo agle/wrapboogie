@@ -9,7 +9,7 @@ let related_loc =
   Re.Pcre.regexp e
 
 let trace_loc =
-  let e = {|Execution trace:\n(    .*\n)+|} in
+  let e = {|Execution trace:\n((?:    .*\n)+)|} in
   Re.Pcre.regexp e
 
 let summary_loc =
@@ -22,7 +22,7 @@ type err_info = {
   col : int;
   filename : string;
   related : err_info option;
-  trace : string;
+  trace : string list;
 }
 
 let line_of_err m =
@@ -59,7 +59,7 @@ let format_ploc input =
 
   Pp_loc.pp ~input ~max_lines:5 f
 
-let show_err_info (m : err_info) =
+let format_error_info fmt (m : err_info) =
   let input = Pp_loc.Input.file m.filename in
   let ploc fmt loc =
     Pp_loc.setup_highlight_tags fmt
@@ -73,15 +73,28 @@ let show_err_info (m : err_info) =
       ();
     Pp_loc.pp ~input fmt loc
   in
-  let relatedloc =
+  let relatedloc fmt =
     match m.related with
     | Some e ->
-        Format.asprintf "\nRelated: %s%a%a" e.msg Format.pp_force_newline ()
-          ploc (line_of_err e)
-    | None -> Format.asprintf ""
+        Format.fprintf fmt "@\nRelated: %s@\n" e.msg;
+        ploc fmt (line_of_err e)
+    | None -> ()
   in
-  Format.asprintf "Error: %s%a%a%s%s" m.msg Format.pp_force_newline () ploc
-    (line_of_err m) m.trace relatedloc
+  Format.fprintf fmt "Error: %s@\n" m.msg;
+  ploc fmt (line_of_err m);
+
+  Format.pp_open_vbox fmt 2;
+  relatedloc fmt;
+
+  (match m.trace with
+  | [] -> ()
+  | trace ->
+      Format.fprintf fmt "@\nExecution trace:@\n";
+      List.iter (Format.fprintf fmt "  %s@\n") trace);
+
+  Format.pp_close_box fmt ();
+
+  Format.pp_force_newline fmt ()
 
 let get_error msg =
   let mainmsg = Re.exec summary_loc msg |> fun g -> Re.Group.get g 0 in
@@ -97,9 +110,9 @@ let get_error msg =
           let _, pos = Re.Group.offset g 0 in
           let trace =
             Re.exec_opt trace_loc ~pos msg
-            |> Option.map (fun g -> Re.Group.get g 0)
-            |> Option.map (fun g -> "\n" ^ g)
-            |> Option.get_or ~default:""
+            |> Option.map (fun g -> Re.Group.get g 1)
+            |> Option.map String.lines |> Option.get_or ~default:[]
+            |> List.map String.trim
           in
           let rloc = Re.exec_opt related_loc ~pos msg in
           let related =
@@ -109,7 +122,7 @@ let get_error msg =
                   let line = Re.Group.get g 2 |> Int.of_string_exn in
                   let col = Re.Group.get g 3 |> Int.of_string_exn in
                   let msg = Re.Group.get g 4 in
-                  Some { msg; line; col; filename; related = None; trace = "" }
+                  Some { msg; line; col; filename; related = None; trace = [] }
               | _ -> None)
           in
           { msg = emsg; line; col; filename; related; trace }
@@ -122,7 +135,7 @@ let print_error msg =
     let msg, ers = get_error msg in
     print_endline msg;
     print_endline "";
-    List.iter (fun e -> print_endline @@ show_err_info e) ers
+    List.iter (format_error_info Format.stdout) ers
   with Not_found -> print_endline msg
 
 let () =
