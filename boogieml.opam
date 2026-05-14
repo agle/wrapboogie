@@ -4,11 +4,11 @@ synopsis: "Boogie wrapper for ocaml"
 description: "Boogie wrapper for ocaml"
 maintainer: ["Alicia Michael <a.michael1@uq.edu.au>"]
 authors: ["Alicia Michael <a.michael1@uq.edu.au>"]
-license: "BSD2"
+license: "BSD-2-Clause"
 tags: ["smt" "formal verification"]
-homepage: "https://github.com/username/reponame"
+homepage: "https://github.com/agle/boogieml"
 doc: "https://url/to/documentation"
-bug-reports: "https://github.com/username/reponame/issues"
+bug-reports: "https://github.com/agle/boogieml/issues"
 depends: [
   "dune" {>= "3.0"}
   "ocaml"
@@ -31,4 +31,4 @@ build: [
     "@doc" {with-doc}
   ]
 ]
-dev-repo: "git+https://github.com/username/reponame.git"
+dev-repo: "git+https://github.com/agle/boogieml.git"

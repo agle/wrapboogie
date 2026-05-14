@@ -5,13 +5,13 @@
 (generate_opam_files true)
 
 (source
- (github username/reponame))
+ (github agle/boogieml))
 
 (authors "Alicia Michael <a.michael1@uq.edu.au>")
 
 (maintainers "Alicia Michael <a.michael1@uq.edu.au>")
 
-(license BSD2)
+(license BSD-2-Clause)
 
 (documentation https://url/to/documentation)
 
