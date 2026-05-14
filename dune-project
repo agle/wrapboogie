@@ -1,26 +1,25 @@
 (lang dune 3.0)
 
-(name boogiewrap)
+(name boogieml)
 
 (generate_opam_files true)
 
 (source
  (github username/reponame))
 
-(authors "Author Name <author@example.com>")
+(authors "Alicia Michael <a.michael1@uq.edu.au>")
 
-(maintainers "Maintainer Name <maintainer@example.com>")
+(maintainers "Alicia Michael <a.michael1@uq.edu.au>")
 
-(license LICENSE)
+(license BSD2)
 
 (documentation https://url/to/documentation)
 
 (package
- (name boogiewrap)
- (synopsis "A short synopsis")
- (description "A longer description")
+ (name boogieml)
+ (synopsis "Boogie wrapper for ocaml")
+ (description "Boogie wrapper for ocaml")
  (depends ocaml containers pp_loc re)
  (tags
-  ("add topics" "to describe" your project)))
+  ("smt" "formal verification")))
 
-; See the complete stanza docs at https://dune.readthedocs.io/en/stable/reference/dune-project/index.html

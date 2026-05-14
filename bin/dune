@@ -3,4 +3,4 @@
 (executable
  (public_name boogiewrap)
  (name boogiewrap)
- (libraries re containers containers.unix pp_loc))
+ (libraries boogieml re containers containers.unix pp_loc))
