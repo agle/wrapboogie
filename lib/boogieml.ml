@@ -146,6 +146,10 @@ let get_error msg =
   in
   { verified_count = n_ok; failed_count = n_err; errs }
 
+let run_file ?(args = "") file =
+  let ou, _, _ = CCUnix.call "boogie %s %s" file args in
+  get_error ou
+
 let run_boogie args =
   let ou, _, _ = CCUnix.call "boogie %s" args in
   get_error ou

@@ -1,7 +1,6 @@
 
 
   $ boogiewrap claslocnew.bpl
-  claslocnew.bpl
   Boogie program verifier finished with 5 verified, 2 errors
   
   Error: this assertion could not be proved
